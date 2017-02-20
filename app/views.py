@@ -24,6 +24,23 @@ def home():
 def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
+    
+    
+    
+@app.route('/filelisting')
+def filelisting():
+    if not session.get('logged_in'):
+        abort(401)
+        
+    flist=[]
+    rootdir = os.getcwd()
+    #print rootdir
+    for subdir, dirs, files in os.walk(rootdir + '/app/static/uploads'):
+        for file in files:
+            flist.append(file)
+    return render_template('filelisting.html', files = flist)
+    
+    
 
 @app.route('/add-file', methods=['POST', 'GET'])
 def add_file():
